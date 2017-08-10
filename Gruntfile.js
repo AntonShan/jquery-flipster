@@ -1,30 +1,39 @@
 module.exports = function(grunt) {
-
+    require('load-grunt-tasks')(grunt)
     grunt.initConfig({
 
         pkg: grunt.file.readJSON('package.json'),
 
         today: grunt.template.today("yyyy-mm-dd"),
 
-        banner: '/*! jQuery.Flipster, v<%= pkg.version %> (built <%= today %>) */\n',
+        banner: '/*! Flipster, v<%= pkg.version %> (built <%= today %>) */\n',
 
         autoprefix: new (require('less-plugin-autoprefix'))({browsers: ["last 3 versions", 'ie >= 9']}),
 
         src: {
             dir: 'src',
-            js: '<%= src.dir %>/jquery.flipster.js',
+            js: '<%= src.dir %>/flipster.js',
             less: '<%= src.dir %>/**/*.less'
         },
 
         dist: {
             dir: 'dist',
-            js: '<%= dist.dir %>/jquery.flipster.min.js',
-            css: '<%= dist.dir %>/jquery.flipster.css',
-            cssmin: '<%= dist.dir %>/jquery.flipster.min.css'
+            js: '<%= dist.dir %>/flipster.min.js',
+            css: '<%= dist.dir %>/flipster.css',
+            cssmin: '<%= dist.dir %>/flipster.min.css'
+        },
+        browserify: {
+            dist: {
+                files: {
+                    '<%= dist.dir %>/flipster.min.js': '<%= src.dir %>/flipster.js'
+                },
+                options: {
+                    transform: [['babelify', { presets: "es2015" }]]
+                }
+            }
         }
 
     });
-
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.config('uglify',{
@@ -77,6 +86,6 @@ module.exports = function(grunt) {
     });
 
 
-    grunt.registerTask('default', ['uglify', 'less']);
+    grunt.registerTask('default', ['browserify:dist', 'less']);
 
 };
