@@ -46,7 +46,7 @@ Options
 
 Configure your options when first initializing Flipster. Default values and descriptions are shown below.
 ```javascript  
-$().flipster(document.querySelector('.my-flipster'), {
+flipster(document.querySelector('.my-flipster'), {
     itemContainer: 'ul',
     // [string|object]
     // Selector for the container of the flippin' items.
